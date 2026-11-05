@@ -434,9 +434,9 @@ export default function NewInterviewPage() {
             value={resumeText}
             onChange={(event) => setResumeText(event.target.value)}
             disabled={resumeBusy}
-            rows={7}
+            rows={9}
             maxLength={5000}
-            className="min-h-40 rounded-control border-blush-100 bg-surface px-4 py-3 text-ink shadow-soft placeholder:text-ink-soft/70 focus-visible:border-blush-200 focus-visible:ring-0 disabled:bg-sand disabled:text-ink-soft disabled:opacity-100"
+            className="h-52 max-h-52 resize-none overflow-y-auto field-sizing-fixed rounded-control border-blush-100 bg-surface px-4 py-3 text-ink shadow-soft placeholder:text-ink-soft/70 focus-visible:border-blush-200 focus-visible:ring-0 disabled:bg-sand disabled:text-ink-soft disabled:opacity-100"
             placeholder="粘贴简历文本，或选择文件后自动识别"
           />
         </div>
@@ -499,9 +499,9 @@ export default function NewInterviewPage() {
             value={jdText}
             onChange={(event) => setJdText(event.target.value)}
             disabled={jdBusy}
-            rows={7}
+            rows={9}
             maxLength={5000}
-            className="min-h-40 rounded-control border-blush-100 bg-surface px-4 py-3 text-ink shadow-soft placeholder:text-ink-soft/70 focus-visible:border-blush-200 focus-visible:ring-0 disabled:bg-sand disabled:text-ink-soft disabled:opacity-100"
+            className="h-52 max-h-52 resize-none overflow-y-auto field-sizing-fixed rounded-control border-blush-100 bg-surface px-4 py-3 text-ink shadow-soft placeholder:text-ink-soft/70 focus-visible:border-blush-200 focus-visible:ring-0 disabled:bg-sand disabled:text-ink-soft disabled:opacity-100"
             placeholder="粘贴岗位描述文本，或上传截图后自动识别"
           />
         </div>

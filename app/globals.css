@@ -1,26 +1,226 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * 只保留类名式 dark 变体，项目本身是「柔和可爱风」浅色主题，
+ * 不提供 .dark 配色。这样 shadcn 组件里的 dark: 工具类不会跟随系统深色模式生效。
+ */
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * 柔和可爱风设计令牌（唯一的颜色/圆角/阴影来源）。
+ * 页面里只引用这些语义化 token，避免十六进制颜色散落在组件中。
+ */
+@theme {
+  /* 底色与文字：暖白底 + 暖棕文字，正文对比度 > 4.5:1 */
+  --color-cream: #fff9f5;
+  --color-surface: #fffdfb;
+  --color-sand: #f3ece7;
+  --color-sand-100: #ede3dc;
+  --color-ink: #4a3f3a;
+  --color-ink-soft: #6e5f58;
+
+  /* 主色：柔粉 / 薄荷绿 / 蜜桃橙（低饱和暖色） */
+  --color-blush: #ffb6c1;
+  --color-blush-50: #fff2f5;
+  --color-blush-100: #ffe3e9;
+  --color-blush-200: #ffd1da;
+  --color-blush-600: #b23a5b;
+  --color-blush-700: #94304b;
+
+  --color-mint: #a8e6cf;
+  --color-mint-50: #effaf4;
+  --color-mint-100: #ddf5e9;
+  --color-mint-200: #c5eedc;
+  --color-mint-600: #2e8b6a;
+  --color-mint-700: #247054;
+
+  --color-peach: #ffd3b6;
+  --color-peach-50: #fff4ec;
+  --color-peach-100: #ffe8d8;
+  --color-peach-200: #ffdcc5;
+  --color-peach-600: #8a4b1f;
+  --color-peach-700: #713c19;
+
+  /* 录像区域使用的暖调深灰（替代纯黑） */
+  --color-night: #3a3330;
+
+  /* 圆润无衬线：Nunito（next/font 失败时整条链路自动回退） */
+  --font-sans:
+    var(--font-nunito), ui-rounded, "Nunito", "Quicksand", system-ui,
+    sans-serif;
+
+  /* 圆角统一 >= 16px */
+  --radius-control: 1rem;
+  --radius-card: 1.25rem;
+  --radius-pill: 9999px;
+
+  /* 只靠大面积低透明度柔和阴影表达层次，不用深色硬边框 */
+  --shadow-soft: 0 6px 18px -10px rgba(74, 63, 58, 0.22);
+  --shadow-card:
+    0 18px 40px -22px rgba(74, 63, 58, 0.28),
+    0 2px 10px -6px rgba(74, 63, 58, 0.12);
+  --shadow-float: 0 12px 28px -14px rgba(74, 63, 58, 0.3);
+
+  /* 录制按钮的柔和脉冲（motion-reduce 下由 animate-none 关闭） */
+  --animate-record-pulse: record-pulse 2.6s ease-in-out infinite;
+
+  /* 欢迎萌图的挥手（motion-reduce 下由 animate-none 关闭） */
+  --animate-mascot-wave: mascot-wave 2.6s ease-in-out infinite;
+
+  /* 报告页奔跑兔的后腿迈步（motion-reduce 下由 animate-none 关闭） */
+  --animate-rabbit-run: rabbit-run 1.2s ease-in-out infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@keyframes mascot-wave {
+  0%,
+  100% {
+    transform: rotate(-12deg);
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  50% {
+    transform: rotate(12deg);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes rabbit-run {
+  0%,
+  100% {
+    transform: rotate(-15deg);
+  }
+
+  50% {
+    transform: rotate(13deg);
+  }
+}
+
+@keyframes record-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(255, 182, 193, 0.45),
+      0 12px 28px -14px rgba(74, 63, 58, 0.3);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 10px rgba(255, 182, 193, 0),
+      0 12px 28px -14px rgba(74, 63, 58, 0.3);
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background-color: var(--color-blush);
+    color: var(--color-ink);
+  }
+
+  /* 所有可点元素都有可见焦点环（键盘导航时出现） */
+  :focus-visible {
+    outline: 3px solid var(--color-mint-700);
+    outline-offset: 2px;
+  }
+
+  /* shadcn 组件默认依赖 border-border / outline-ring，这里统一指向糖果色 */
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
+
+/*
+ * shadcn 的语义变量 → Tailwind 颜色工具类（bg-background、text-primary 等）。
+ * 值来自下方 :root 的糖果色映射。
+ */
+@theme inline {
+  --font-heading:
+    var(--font-nunito), ui-rounded, "Nunito", "Quicksand", system-ui,
+    sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * shadcn 语义变量映射：全部指向糖果色 token，不保留默认的灰白黑。
+ * --radius 设为 16px，使 shadcn 的 rounded-lg（按钮/输入框）正好 16px。
+ */
+:root {
+  --background: #fff9f5; /* cream */
+  --foreground: #4a3f3a; /* ink */
+  --card: #fffdfb; /* surface */
+  --card-foreground: #4a3f3a; /* ink */
+  --popover: #fffdfb; /* surface */
+  --popover-foreground: #4a3f3a; /* ink */
+  --primary: #ffb6c1; /* blush */
+  --primary-foreground: #4a3f3a; /* ink */
+  --secondary: #f3ece7; /* sand */
+  --secondary-foreground: #4a3f3a; /* ink */
+  --muted: #f3ece7; /* sand */
+  --muted-foreground: #6e5f58; /* ink-soft */
+  --accent: #ddf5e9; /* mint-100 */
+  --accent-foreground: #4a3f3a; /* ink */
+  --destructive: #b23a5b; /* blush-600 */
+  --border: #ede3dc; /* sand-100 */
+  --input: #ede3dc; /* sand-100 */
+  --ring: #247054; /* mint-700 */
+  --chart-1: #ffb6c1; /* blush */
+  --chart-2: #a8e6cf; /* mint */
+  --chart-3: #ffd3b6; /* peach */
+  --chart-4: #94304b; /* blush-700 */
+  --chart-5: #247054; /* mint-700 */
+  --radius: 1rem;
+  --sidebar: #fff9f5;
+  --sidebar-foreground: #4a3f3a;
+  --sidebar-primary: #ffb6c1;
+  --sidebar-primary-foreground: #4a3f3a;
+  --sidebar-accent: #f3ece7;
+  --sidebar-accent-foreground: #4a3f3a;
+  --sidebar-border: #ede3dc;
+  --sidebar-ring: #247054;
 }

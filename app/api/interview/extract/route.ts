@@ -57,8 +57,8 @@ function truncateText(raw: string): TruncateResult {
   };
 }
 
-// 图片转文字工作流（入参 image_url: file 类型，实际传 {"file_id":"..."} 的 JSON 字符串）
-const IMAGE_WORKFLOW_ID = '7704309996397543450';
+// 图片转文字工作流入参 image_url: file 类型，实际传 {"file_id":"..."} 的 JSON 字符串
+// （工作流 ID 由环境变量 COZE_WORKFLOW_ID_OCR 配置）。
 // Coze 文件上传单文件上限远高于 10 MB，这里沿用 512 MB 不设额外约束。
 const COZE_UPLOAD_URL = 'https://api.coze.cn/v1/files/upload';
 
@@ -135,7 +135,10 @@ async function parseResumeText(file: File, extension: string): Promise<string> {
   return text;
 }
 
-async function recognizeJdText(file: File): Promise<string> {
+async function recognizeJdText(
+  file: File,
+  workflowId: string,
+): Promise<string> {
   const pat = process.env.COZE_PAT;
 
   if (!pat) {
@@ -180,7 +183,7 @@ async function recognizeJdText(file: File): Promise<string> {
 
   // 该工作流的 image 入参只接受 {"file_id":"..."} 的 JSON 字符串：
   // 裸 file_id 会被 Coze 判为参数非法（code=4000）。
-  const data = await runWorkflow(IMAGE_WORKFLOW_ID, {
+  const data = await runWorkflow(workflowId, {
     image_url: JSON.stringify({ file_id: uploadPayload.data.id }),
   });
 
@@ -248,10 +251,22 @@ export async function POST(request: Request) {
   }
 
   try {
-    const text =
-      kind === 'jd'
-        ? await recognizeJdText(file)
-        : await parseResumeText(file, extensionOf(file.name));
+    let text: string;
+
+    if (kind === 'jd') {
+      const workflowId = process.env.COZE_WORKFLOW_ID_OCR;
+
+      if (!workflowId) {
+        return errorResponse(
+          '缺少环境变量 COZE_WORKFLOW_ID_OCR，无法调用 JD 图片识别工作流',
+          500,
+        );
+      }
+
+      text = await recognizeJdText(file, workflowId);
+    } else {
+      text = await parseResumeText(file, extensionOf(file.name));
+    }
 
     if (text.trim().length === 0) {
       return errorResponse(

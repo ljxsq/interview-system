@@ -47,7 +47,7 @@
 npm install
 ```
 
-在项目根目录创建 `.env.local`（变量见下表，**不要提交到版本库**），然后：
+在项目根目录复制模板并填入真实值：`cp .env.example .env.local`（变量见下表，**不要提交真实值**），然后：
 
 ```bash
 npm run dev        # 开发模式，默认 http://localhost:3000
@@ -56,7 +56,7 @@ npm start          # 启动生产服务（需先 build）
 npm run lint       # ESLint
 ```
 
-`package.json` 中只有 `dev`、`build`、`start`、`lint` 四个脚本，没有测试脚本。
+`package.json` 提供 `dev`、`build`、`start`、`lint`、`e2e` 五个脚本。`e2e` 用 Playwright 跑端到端冒烟测试：默认复用 `http://localhost:3000` 上已运行的服务，使用系统 Edge（msedge）内核与假摄像头 / 麦克风，产物写入系统临时目录。
 
 ## 环境变量
 
@@ -65,11 +65,12 @@ npm run lint       # ESLint
 | `COZE_PAT` | 调用 Coze 工作流、上传视频与图片的访问令牌 | 是（出题、答题上传、JD OCR） |
 | `COZE_WORKFLOW_ID_PREP` | 出题工作流 ID | 是 |
 | `COZE_WORKFLOW_ID_EVAL` | 评估工作流 ID | 是 |
+| `COZE_WORKFLOW_ID_OCR` | JD 截图图片识别工作流 ID | 是（JD 截图转文字）；缺失时上传 JD 截图返回 500「缺少环境变量 COZE_WORKFLOW_ID_OCR…」 |
 | `AUTH_SECRET` | 登录 JWT 的 HS256 签名密钥 | 是 |
 
 说明：
 
-- 图片 OCR 工作流 ID 目前硬编码在 `app/api/interview/extract/route.ts`，**不读取环境变量**。
+- 图片 OCR 工作流 ID 由 `COZE_WORKFLOW_ID_OCR` 提供，不再硬编码；五个变量可直接参考仓库根目录的 `.env.example` 模板。
 - 这些变量只在服务端读取；代码中没有任何 `NEXT_PUBLIC_*` 变量。
 
 ## 目录结构
@@ -127,5 +128,5 @@ npm run lint       # ESLint
 - 简历 / JD 单文件上限 10 MB；提取文本超过 5000 字会截断，`/api/interview/prep` 对超过 5000 字符的入参同样拒绝。
 - 视频上传单文件上限 50 MB，仅接受 `video/mp4` 与 `video/webm`；评估工作流无法解析视频时返回 422 并提示重录。
 - 429 重试的 `Retry-After` 只支持整数 / 小数秒，不支持 HTTP-date（解析失败时回退指数退避）。
-- 无自动化测试与 CI；注册无邮箱验证，登录无失败次数限流。
+- 有 Playwright 端到端冒烟测试（`npm run e2e`），但无 CI；注册无邮箱验证，登录无失败次数限流。
 - JWT 为无状态凭证，登出只清除 Cookie，不能服务端吊销已签发的 token。

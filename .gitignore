@@ -42,3 +42,8 @@ next-env.d.ts
 
 # local runtime data
 /data
+
+# local screenshots and temp artifacts
+/screenshots
+*.log
+*.tmp

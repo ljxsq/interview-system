@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
 import "./globals.css";
 
-const nunito = Nunito({
-  variable: "--font-nunito",
-  subsets: ["latin"],
-});
+import { SceneBackground } from "@/components/scene-background";
 
 export const metadata: Metadata = {
   title: "智能面试系统",
@@ -15,8 +11,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${nunito.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col bg-cream font-sans text-ink">
+    <html lang="zh-CN" className="h-full antialiased">
+      <body className="flex min-h-full flex-col bg-xuan font-sans text-ink">
+        <SceneBackground />
         {children}
       </body>
     </html>

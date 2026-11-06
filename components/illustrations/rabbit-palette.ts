@@ -1,19 +1,20 @@
 /**
- * 登录页欢迎兔与报告页奔跑兔共用的糖果色。
- * 集中色值，避免两个组件的皮毛/内耳/描边配色漂移。
+ * 登录页「执卷墨兔」与报告页「奔跑墨兔」共用的水墨色。
+ * 集中色值，避免两个组件的墨色 / 黛青 / 淡青配色漂移。
  */
 export const RABBIT_COLORS = {
-  furLight: '#FFF6F1',
-  furShade: '#F3DFD3',
-  earInnerLight: '#FFD3DC',
-  earInner: '#FFB6C1',
-  cheek: '#FFB6C1',
-  outline: '#C9B4A6',
-  whisker: '#D8BFB0',
-  eye: '#4A3F3A',
-  noseStroke: '#D79CA8',
-  mouthStroke: '#B49C8C',
-  belly: '#FFFDFB',
-  sheen: '#FFFFFF',
-  ground: '#EDE3DC',
+  furLight: '#F5F5F0', // 月白：兔身留白
+  furShade: '#E3EDEB', // 淡青灰：腹部与暗部的水墨渲染
+  earInnerLight: '#DDE5E4', // 耳内淡青
+  earInner: '#C2D0CE', // 耳内黛青淡染
+  cheek: '#2F4F4F', // 黛青（低透明度使用）
+  outline: '#262623', // 浓墨线
+  whisker: '#8A8880', // 淡墨须线
+  eye: '#262623',
+  noseStroke: '#2F4F4F',
+  mouthStroke: '#6B6963',
+  belly: '#F5F5F0',
+  sheen: '#FAFAF7',
+  ground: '#E3E0D8',
+  seal: '#2F4F4F', // 青印
 } as const;

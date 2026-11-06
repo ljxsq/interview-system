@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useId, useState } from 'react';
 
@@ -7,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { WelcomeRabbit } from '@/components/illustrations/welcome-rabbit';
 
 type Mode = 'login' | 'register';
 
@@ -33,30 +33,59 @@ const MODE_COPY: Record<Mode, { title: string; subtitle: string; submit: string;
 
 const FEATURES = [
   {
-    icon: '📄',
-    tone: 'blush',
+    icon: 'scroll',
     title: '简历与岗位驱动出题',
     description: '粘贴或上传简历与 JD（PDF/DOCX/截图），Coze 生成针对性题目。',
   },
   {
-    icon: '🎬',
-    tone: 'mint',
+    icon: 'lantern',
     title: '逐题视频作答',
     description: '浏览器内录制，录完即传，可回看、可重录，统一评估。',
   },
   {
-    icon: '📊',
-    tone: 'peach',
+    icon: 'slips',
     title: '多维评分与报告',
     description: '按清晰度、技术深度、岗位相关性评分，标注覆盖、遗漏与兜底。',
   },
 ] as const;
 
-const FEATURE_TONE: Record<(typeof FEATURES)[number]['tone'], string> = {
-  blush: 'bg-blush-100',
-  mint: 'bg-mint-100',
-  peach: 'bg-peach-100',
-};
+/** 古风线稿图标：卷轴 / 灯笼 / 竹简，替代原先的 emoji。 */
+function FeatureIcon({ kind }: { kind: (typeof FEATURES)[number]['icon'] }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="size-4"
+    >
+      {kind === 'scroll' && (
+        <>
+          <rect x="7" y="5" width="10" height="14" rx="1" />
+          <path d="M7 5c-2 0-2 3 0 3M17 5c2 0 2 3 0 3M7 19c-2 0-2-3 0-3M17 19c2 0 2-3 0-3" />
+          <path d="M10 9h4M10 12h4M10 15h3" />
+        </>
+      )}
+      {kind === 'lantern' && (
+        <>
+          <path d="M12 3v3" />
+          <ellipse cx="12" cy="12" rx="6" ry="7" />
+          <path d="M6 9h12M6 15h12" />
+          <path d="M12 19v2" />
+        </>
+      )}
+      {kind === 'slips' && (
+        <>
+          <path d="M8 4v16M12 4v16M16 4v16" />
+          <path d="M6 8h12M6 16h12" />
+        </>
+      )}
+    </svg>
+  );
+}
 
 interface AuthResponse {
   success?: boolean;
@@ -195,56 +224,69 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col gap-6 px-4 pt-6 pb-4 sm:px-6">
-      <header className="flex items-center gap-4">
-        <WelcomeRabbit className="h-[72px] w-[72px] shrink-0 sm:h-24 sm:w-24" />
+    <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col gap-12 px-4 pt-10 pb-10 sm:px-6">
+      <header className="flex items-center gap-4 border-b border-rule pb-6">
+        <Image
+          src="/login-portrait.png"
+          alt=""
+          width={474}
+          height={629}
+          priority
+          className="login-portrait h-auto w-[72px] shrink-0 sm:w-24"
+        />
         <div className="min-w-0">
-          <h1 className="text-xl font-bold text-ink sm:text-2xl">
+          {/* 标题上方的极细横线，本页唯一的页头装饰 */}
+          <div
+            aria-hidden="true"
+            className="mb-3 h-px w-14 bg-daiqing-600/40"
+          />
+          <h1 className="text-xl font-medium text-daiqing-700 sm:text-2xl">
             智能面试系统
           </h1>
-          <p className="mt-1 text-xs text-ink-soft sm:text-sm">
+          <p className="mt-2 text-xs text-ink-soft sm:text-sm">
             上传简历与岗位描述，录制视频作答，自动生成多维面试报告。
           </p>
         </div>
       </header>
 
-      <ul aria-label="功能概览" className="grid gap-3 md:grid-cols-3">
+      {/* 功能概览：一格一事，用淡墨细线分格 */}
+      <ul
+        aria-label="功能概览"
+        className="panel grid divide-y divide-rule-soft overflow-hidden md:grid-cols-3 md:divide-x md:divide-y-0"
+      >
         {FEATURES.map((feature) => (
-          <li
-            key={feature.title}
-            className="rounded-card bg-surface p-3 shadow-soft ring-1 ring-blush-100"
-          >
+          <li key={feature.title} className="p-5">
             <div className="flex items-center gap-2.5">
               <span
                 aria-hidden="true"
-                className={`flex size-7 shrink-0 items-center justify-center rounded-full text-sm ${FEATURE_TONE[feature.tone]}`}
+                className="flex size-7 shrink-0 items-center justify-center rounded-pill border border-rule bg-surface text-daiqing-600"
               >
-                {feature.icon}
+                <FeatureIcon kind={feature.icon} />
               </span>
-              <p className="text-sm font-semibold text-ink">
+              <p className="text-sm font-medium text-ink">
                 {feature.title}
               </p>
             </div>
-            <p className="mt-1.5 text-xs leading-5 text-ink-soft">
+            <p className="mt-2 text-xs leading-5 text-ink-soft">
               {feature.description}
             </p>
           </li>
         ))}
       </ul>
 
-      <Card className="mx-auto w-full max-w-lg gap-3 rounded-card bg-surface px-6 py-4 shadow-card ring-0 sm:px-7 lg:py-5">
+      <Card className="panel mx-auto w-full max-w-lg gap-4 px-6 py-8 sm:px-8">
         <CardHeader className="px-0">
           <div>
-            <h2 className="text-xl font-bold text-ink">{copy.title}</h2>
-            <p className="mt-0.5 text-sm text-ink-soft">{copy.subtitle}</p>
+            <h2 className="text-xl font-medium text-daiqing-700">{copy.title}</h2>
+            <p className="mt-1 text-sm text-ink-soft">{copy.subtitle}</p>
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-3 px-0">
+        <CardContent className="space-y-4 px-0">
       <div
         role="tablist"
         aria-label="登录或注册"
-        className="grid grid-cols-2 gap-1 rounded-pill bg-blush-50 p-1 shadow-soft"
+        className="grid grid-cols-2 gap-1 rounded-control border border-edge bg-surface p-1"
       >
         {(['login', 'register'] as const).map((tab) => (
           <button
@@ -257,9 +299,9 @@ export default function LoginPage() {
             tabIndex={mode === tab ? 0 : -1}
             onClick={() => selectMode(tab)}
             onKeyDown={handleTabKeyDown}
-            className={`min-h-10 rounded-pill px-3 py-1.5 text-sm font-semibold transition-colors ${
+            className={`min-h-10 border-b border-transparent px-3 py-1.5 text-sm font-medium transition-colors ${
               mode === tab
-                ? 'bg-surface text-ink shadow-soft'
+                ? 'border-daiqing-600 bg-surface text-daiqing-700'
                 : 'text-ink-soft hover:text-ink'
             }`}
           >
@@ -275,10 +317,10 @@ export default function LoginPage() {
         onSubmit={handleSubmit}
         aria-busy={loading}
         noValidate={mode === 'register'}
-        className="space-y-3"
+        className="space-y-5"
       >
         <div className="space-y-1">
-          <Label htmlFor={emailId} className="text-sm font-semibold text-ink">
+          <Label htmlFor={emailId} className="text-sm font-medium text-ink">
             邮箱
           </Label>
           <Input
@@ -288,13 +330,13 @@ export default function LoginPage() {
             onChange={(event) => setEmail(event.target.value)}
             required
             autoComplete="email"
-            className="h-10 rounded-control border-blush-100 bg-surface px-4 text-ink shadow-soft placeholder:text-ink-soft/70 focus-visible:border-blush-200 focus-visible:ring-0"
+            className="h-11 rounded-control border-edge bg-surface px-4 text-ink placeholder:text-ink-soft focus-visible:border-daiqing-600 focus-visible:ring-0"
             placeholder="you@example.com"
           />
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor={passwordId} className="text-sm font-semibold text-ink">
+          <Label htmlFor={passwordId} className="text-sm font-medium text-ink">
             密码
           </Label>
           <Input
@@ -307,7 +349,7 @@ export default function LoginPage() {
               mode === 'register' ? 'new-password' : 'current-password'
             }
             aria-describedby={mode === 'register' ? passwordHintId : undefined}
-            className="h-10 rounded-control border-blush-100 bg-surface px-4 text-ink shadow-soft placeholder:text-ink-soft/70 focus-visible:border-blush-200 focus-visible:ring-0"
+            className="h-11 rounded-control border-edge bg-surface px-4 text-ink placeholder:text-ink-soft focus-visible:border-daiqing-600 focus-visible:ring-0"
             placeholder="请输入密码"
           />
         </div>
@@ -321,7 +363,7 @@ export default function LoginPage() {
         {error && (
           <p
             role="alert"
-            className="rounded-control bg-blush-50 px-4 py-2.5 text-sm text-blush-700 shadow-soft"
+            className="rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-2.5 text-sm text-daiqing-700"
           >
             {error}
           </p>
@@ -331,7 +373,7 @@ export default function LoginPage() {
           <p
             role="status"
             aria-live="polite"
-            className="rounded-control bg-mint-50 px-4 py-2.5 text-sm text-mint-700 shadow-soft"
+            className="rounded-control border border-daiqing-600 bg-daiqing-100 px-4 py-2.5 text-sm text-daiqing-700"
           >
             {notice}
           </p>
@@ -340,7 +382,7 @@ export default function LoginPage() {
         <Button
           type="submit"
           disabled={loading}
-          className="h-10 w-full rounded-control bg-blush px-4 text-base font-semibold text-ink shadow-float transition-colors hover:bg-blush-200 focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-60"
+          className="h-11 w-full rounded-control bg-daiqing-700 px-4 text-base font-medium text-surface transition-colors hover:bg-daiqing-800 focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? copy.pending : copy.submit}
         </Button>

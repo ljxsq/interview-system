@@ -94,13 +94,12 @@ export default function InterviewSessionPage() {
     <Suspense
       fallback={
         <main className="mx-auto w-full max-w-3xl p-6">
-          <div className="flex flex-col items-center gap-4 rounded-card bg-surface p-6 text-center shadow-card">
+          <div className="panel flex flex-col items-center gap-4 p-6 text-center">
             <WaitingIllustration
               className="h-32 w-auto shrink-0"
               label="正在加载面试题"
             />
-            <p className="flex items-center gap-2 text-sm text-ink-soft">
-              <span aria-hidden="true">⏳</span>
+            <p className="text-sm text-ink-soft">
               正在加载面试题…
             </p>
             <div aria-hidden="true" className="w-full max-w-xs space-y-2">
@@ -567,13 +566,12 @@ function InterviewSessionContent() {
   if (isLoading) {
     return (
       <main className="mx-auto w-full max-w-3xl p-6">
-        <div className="flex flex-col items-center gap-4 rounded-card bg-surface p-6 text-center shadow-card">
+        <div className="panel flex flex-col items-center gap-4 p-6 text-center">
           <WaitingIllustration
             className="h-32 w-auto shrink-0"
             label="正在加载面试题"
           />
-          <p className="flex items-center gap-2 text-sm text-ink-soft">
-            <span aria-hidden="true">⏳</span>
+          <p className="text-sm text-ink-soft">
             正在加载面试题…
           </p>
           <div aria-hidden="true" className="w-full max-w-xs space-y-2">
@@ -588,8 +586,8 @@ function InterviewSessionContent() {
   if (effectiveLoadError) {
     return (
       <main className="mx-auto w-full max-w-3xl space-y-3 p-6">
-        <h1 className="text-xl font-bold text-ink">无法加载面试</h1>
-        <p className="rounded-control bg-blush-50 px-4 py-3 text-sm text-blush-700 shadow-soft">
+        <h1 className="text-xl font-medium text-ink">无法加载面试</h1>
+        <p className="rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700">
           {effectiveLoadError}
         </p>
       </main>
@@ -599,13 +597,12 @@ function InterviewSessionContent() {
   if (!currentQuestion) {
     return (
       <main className="mx-auto w-full max-w-3xl p-6">
-        <div className="flex flex-col items-center gap-3 rounded-card bg-surface p-6 text-center shadow-card">
+        <div className="panel flex flex-col items-center gap-3 p-6 text-center">
           <WaitingIllustration
             className="h-28 w-auto shrink-0"
             label="该会话暂无题目"
           />
-          <p className="flex items-center gap-2 text-sm text-ink-soft">
-            <span aria-hidden="true">🪴</span>
+          <p className="text-sm text-ink-soft">
             该会话暂无题目。
           </p>
         </div>
@@ -614,14 +611,14 @@ function InterviewSessionContent() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-3xl space-y-5 p-6 pb-10">
-      <header className="flex flex-wrap items-center justify-between gap-3">
+    <main className="mx-auto w-full max-w-3xl space-y-12 p-6 pb-12">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-rule pb-6">
         <div>
-          <h1 className="flex items-center gap-2 text-2xl font-bold text-ink">
-            <span aria-hidden="true">🎙️</span>
+          <h1 className="flex items-center gap-3 text-2xl font-medium text-daiqing-700">
+            <SealMark />
             模拟面试
           </h1>
-          <p className="mt-1 text-sm text-ink-soft">
+          <p className="mt-2 text-sm text-ink-soft">
             会话状态：{status || '未知'}
           </p>
         </div>
@@ -630,39 +627,39 @@ function InterviewSessionContent() {
         </p>
       </header>
 
-      <section className="space-y-3 rounded-card bg-surface p-5 shadow-card">
+      <section className="panel space-y-4 p-6">
         <div className="flex items-center gap-2">
-          <span className="rounded-pill bg-blush-100 px-3 py-1 text-xs font-semibold text-blush-700">
+          <span className="rounded-pill border border-daiqing-600 bg-daiqing-50 px-3 py-1 text-xs font-medium text-daiqing-700">
             第 {currentIndex + 1} 题
           </span>
-          <span className="rounded-pill bg-peach-50 px-3 py-1 text-xs font-medium text-peach-700">
+          <span className="rounded-pill border border-edge bg-sand px-3 py-1 text-xs font-medium text-ink-soft">
             难度：{currentQuestion.difficulty}
           </span>
           {isCurrentEvaluating ? (
-            <span className="rounded-pill bg-peach-200 px-3 py-1 text-xs font-semibold text-peach-700">
+            <span className="rounded-pill border border-daiqing-600 bg-daiqing-100 px-3 py-1 text-xs font-medium text-daiqing-700">
               评估中
             </span>
           ) : isCurrentPending ? (
-            <span className="rounded-pill bg-peach-100 px-3 py-1 text-xs font-semibold text-peach-700">
+            <span className="rounded-pill border border-daiqing-600 bg-daiqing-50 px-3 py-1 text-xs font-medium text-daiqing-700">
               已录制待评估
             </span>
           ) : currentResult ? (
-            <span className="rounded-pill bg-mint-100 px-3 py-1 text-xs font-semibold text-mint-700">
+            <span className="rounded-pill border border-daiqing-700 bg-daiqing-700 px-3 py-1 text-xs font-medium text-surface">
               已评估
             </span>
           ) : (
-            <span className="rounded-pill bg-sand px-3 py-1 text-xs font-medium text-ink-soft">
+            <span className="rounded-pill border border-edge bg-sand px-3 py-1 text-xs font-medium text-ink-soft">
               未录制
             </span>
           )}
         </div>
 
-        <p className="text-base leading-7 text-ink">{currentQuestion.question_text}</p>
+        <p className="font-heading text-[17px] leading-8 text-ink">{currentQuestion.question_text}</p>
       </section>
 
-      <section className="space-y-3 rounded-card bg-surface p-5 shadow-card">
-        <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-ink">录制回答</h2>
+      <section className="panel space-y-4 p-6">
+        <div className="flex items-center justify-between border-b border-rule-soft pb-3">
+          <h2 className="text-lg font-medium text-ink">录制回答</h2>
           {currentRecording && (
             <p className="text-xs text-ink-soft">
               已录制{' '}
@@ -680,7 +677,7 @@ function InterviewSessionContent() {
         />
 
         {stage === 'recording' && (
-          <p className="text-sm font-medium text-blush-700">
+          <p className="text-sm font-medium text-daiqing-700">
             ● 正在录制…点击「答题结束」将只上传视频，不立即评估
           </p>
         )}
@@ -688,9 +685,9 @@ function InterviewSessionContent() {
         {stage === 'uploading' && (
           <div
             role="status"
-            className="flex items-center gap-2 rounded-control bg-peach-50 px-4 py-3 text-sm text-peach-700 shadow-soft"
+            className="flex items-center gap-2 rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700"
           >
-            <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-peach-600 border-t-transparent" />
+            <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-daiqing-600 border-t-transparent" />
             <span>正在上传视频（仅上传，不评估），完成后可直接进入下一题…</span>
           </div>
         )}
@@ -698,7 +695,7 @@ function InterviewSessionContent() {
         {isCurrentPending && !batch.running && (
           <p
             role="status"
-            className="rounded-control bg-peach-50 px-4 py-3 text-sm text-peach-700 shadow-soft"
+            className="rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700"
           >
             已录制待评估：视频已保存，可回看或重录；全部录完后在最后一题点「提交并统一评估」。
           </p>
@@ -707,9 +704,9 @@ function InterviewSessionContent() {
         {batch.running && (
           <div
             role="status"
-            className="flex items-center gap-2 rounded-control bg-peach-50 px-4 py-3 text-sm text-peach-700 shadow-soft"
+            className="flex items-center gap-2 rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700"
           >
-            <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-peach-600 border-t-transparent" />
+            <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-daiqing-600 border-t-transparent" />
             <span>
               正在统一评估：第 {batch.current} / {batch.total} 题…
               请勿翻页、重录或关闭页面
@@ -720,7 +717,7 @@ function InterviewSessionContent() {
         {!batch.running && batch.failed.length > 0 && (
           <div
             role="alert"
-            className="space-y-2 rounded-control bg-blush-50 px-4 py-3 text-sm text-blush-700 shadow-soft"
+            className="space-y-2 rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700"
           >
             <p>
               有 {batch.failed.length} 道题评估失败（其余题已完成）：
@@ -751,14 +748,14 @@ function InterviewSessionContent() {
                 );
               })}
             </ul>
-            <p className="text-xs text-blush-600">
+            <p className="text-xs text-daiqing-600">
               失败题仍保留在「已录制待评估」，可重试，不会重新上传视频。
             </p>
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 onClick={() => void submitAll()}
-                className="rounded-pill border border-blush-200 bg-surface px-3 py-1.5 font-semibold text-blush-700 shadow-soft transition-colors hover:bg-blush-50"
+                className="h-10 rounded-control border border-daiqing-600 bg-surface px-4 text-sm font-medium text-daiqing-700 transition-colors hover:bg-daiqing-50"
               >
                 重试失败题目
               </button>
@@ -767,7 +764,7 @@ function InterviewSessionContent() {
                 onClick={() =>
                   router.push(`/interview/${sessionId}/report`)
                 }
-                className="rounded-pill border border-blush-100 bg-surface px-3 py-1.5 font-medium text-ink shadow-soft transition-colors hover:bg-sand"
+                className="h-10 rounded-control border border-edge bg-surface px-4 text-sm font-medium text-ink transition-colors hover:bg-xuan"
               >
                 查看报告
               </button>
@@ -776,13 +773,13 @@ function InterviewSessionContent() {
         )}
 
         {stage === 'error' && actionError && (
-          <div className="space-y-2 rounded-control bg-blush-50 px-4 py-3 text-sm text-blush-700 shadow-soft">
+          <div className="space-y-2 rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700">
             <p>{actionError}</p>
             {currentRecording && (
               <button
                 type="button"
                 onClick={retryUpload}
-                className="rounded-pill border border-blush-200 bg-surface px-3 py-1.5 font-semibold text-blush-700 shadow-soft transition-colors hover:bg-blush-50"
+                className="h-10 rounded-control border border-daiqing-600 bg-surface px-4 text-sm font-medium text-daiqing-700 transition-colors hover:bg-daiqing-50"
               >
                 重新上传这段视频
               </button>
@@ -795,7 +792,7 @@ function InterviewSessionContent() {
             type="button"
             onClick={() => goToQuestion(currentIndex - 1)}
             disabled={currentIndex === 0 || busy}
-            className="rounded-control border border-sand-100 bg-surface px-4 py-2 font-medium text-ink shadow-soft transition-colors hover:bg-sand disabled:cursor-not-allowed disabled:opacity-60"
+            className="h-10 rounded-control border border-edge bg-surface px-4 text-sm font-medium text-ink transition-colors hover:bg-xuan disabled:cursor-not-allowed disabled:opacity-60"
           >
             上一题
           </button>
@@ -816,8 +813,8 @@ function InterviewSessionContent() {
               disabled={busy}
               className={
                 allEvaluated
-                  ? 'rounded-control bg-mint px-5 py-2 font-semibold text-ink shadow-float transition-colors hover:bg-mint-200 disabled:cursor-not-allowed disabled:opacity-60'
-                  : 'rounded-control bg-blush px-5 py-2 font-semibold text-ink shadow-float transition-colors hover:bg-blush-200 disabled:cursor-not-allowed disabled:opacity-60'
+                  ? 'h-10 rounded-control bg-daiqing-700 px-5 text-sm font-medium text-surface transition-colors hover:bg-daiqing-800 disabled:cursor-not-allowed disabled:opacity-60'
+                  : 'h-10 rounded-control bg-daiqing-700 px-5 text-sm font-medium text-surface transition-colors hover:bg-daiqing-800 disabled:cursor-not-allowed disabled:opacity-60'
               }
             >
               {allEvaluated ? '查看报告' : '提交并统一评估'}
@@ -827,7 +824,7 @@ function InterviewSessionContent() {
               type="button"
               onClick={() => goToQuestion(currentIndex + 1)}
               disabled={busy}
-              className="rounded-control bg-mint px-5 py-2 font-semibold text-ink shadow-float transition-colors hover:bg-mint-200 disabled:cursor-not-allowed disabled:opacity-60"
+              className="h-10 rounded-control bg-daiqing-700 px-5 text-sm font-medium text-surface transition-colors hover:bg-daiqing-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
               下一题
             </button>
@@ -837,12 +834,12 @@ function InterviewSessionContent() {
         {isLastQuestion && !batch.running && (
           <div className="space-y-1">
             {pendingCount > 0 && (
-              <p role="status" className="text-sm font-medium text-peach-700">
+              <p role="status" className="text-sm font-medium text-daiqing-700">
                 还有 {pendingCount} 题已录制待评估，提交后按题目顺序逐题评估
               </p>
             )}
             {notRecordedCount > 0 && (
-              <p role="status" className="text-sm font-medium text-peach-700">
+              <p role="status" className="text-sm font-medium text-daiqing-700">
                 还有 {notRecordedCount} 题未录制，提交后这些题将在报告中标记为未作答
               </p>
             )}
@@ -851,15 +848,15 @@ function InterviewSessionContent() {
       </section>
 
       {currentResult && (
-        <section className="space-y-3 rounded-card bg-mint-50 p-5 shadow-card">
-          <div className="flex items-baseline gap-2">
-            <h2 className="text-lg font-bold text-ink">评估结果</h2>
-            <span className="text-3xl font-bold text-mint-700">
+        <section className="panel space-y-4 border-daiqing-600 bg-daiqing-50 p-6">
+          <div className="flex items-baseline gap-2 border-b border-daiqing-600 pb-3">
+            <h2 className="text-lg font-medium text-ink">评估结果</h2>
+            <span className="font-heading text-3xl font-medium text-daiqing-700">
               {currentResult.score}
             </span>
             <span className="text-sm text-ink-soft">分</span>
             {currentResult.is_fallback && (
-              <span className="rounded-pill bg-blush-100 px-3 py-1 text-xs font-semibold text-blush-700">
+              <span className="rounded-pill border border-daiqing-600 bg-daiqing-50 px-3 py-1 text-xs font-medium text-daiqing-700">
                 兜底评分
               </span>
             )}
@@ -867,21 +864,21 @@ function InterviewSessionContent() {
 
           {currentResult.dimension_scores && (
             <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-3">
-              <div className="rounded-control bg-surface p-3 shadow-soft">
+              <div className="rounded-control border border-rule-soft bg-surface p-3">
                 <p className="text-ink-soft">表达清晰度</p>
-                <p className="mt-1 text-lg font-semibold text-ink">
+                <p className="mt-1 font-heading text-lg font-medium text-ink">
                   {currentResult.dimension_scores.clarity}
                 </p>
               </div>
-              <div className="rounded-control bg-surface p-3 shadow-soft">
+              <div className="rounded-control border border-rule-soft bg-surface p-3">
                 <p className="text-ink-soft">技术深度</p>
-                <p className="mt-1 text-lg font-semibold text-ink">
+                <p className="mt-1 font-heading text-lg font-medium text-ink">
                   {currentResult.dimension_scores.depth}
                 </p>
               </div>
-              <div className="rounded-control bg-surface p-3 shadow-soft">
+              <div className="rounded-control border border-rule-soft bg-surface p-3">
                 <p className="text-ink-soft">岗位相关性</p>
-                <p className="mt-1 text-lg font-semibold text-ink">
+                <p className="mt-1 font-heading text-lg font-medium text-ink">
                   {currentResult.dimension_scores.relevance}
                 </p>
               </div>
@@ -889,7 +886,7 @@ function InterviewSessionContent() {
           )}
 
           <div>
-            <h3 className="text-sm font-semibold text-ink">评语</h3>
+            <h3 className="text-sm font-medium text-ink">评语</h3>
             <p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-ink">
               {currentResult.comment}
             </p>
@@ -897,7 +894,7 @@ function InterviewSessionContent() {
 
           {!!currentResult.covered_points?.length && (
             <div>
-              <h3 className="text-sm font-semibold text-ink">已覆盖要点</h3>
+              <h3 className="text-sm font-medium text-ink">已覆盖要点</h3>
               <ul className="mt-1 list-disc space-y-1 pl-5 text-sm">
                 {currentResult.covered_points.map((point) => (
                   <li key={point}>{point}</li>
@@ -908,8 +905,8 @@ function InterviewSessionContent() {
 
           {!!currentResult.missed_points?.length && (
             <div>
-              <h3 className="text-sm font-semibold text-ink">遗漏要点</h3>
-              <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-peach-700">
+              <h3 className="text-sm font-medium text-ink">遗漏要点</h3>
+              <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-daiqing-700">
                 {currentResult.missed_points.map((point) => (
                   <li key={point}>{point}</li>
                 ))}
@@ -919,5 +916,32 @@ function InterviewSessionContent() {
         </section>
       )}
     </main>
+  );
+}
+
+/** 标题旁的青印式线稿标记，替代原先的 emoji 装饰。 */
+function SealMark() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className="size-6 shrink-0 text-daiqing-700"
+    >
+      <rect
+        x="3.5"
+        y="3.5"
+        width="17"
+        height="17"
+        rx="2"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
+      <path
+        d="M7.5 8.5h9M7.5 12h9M7.5 15.5h9"
+        stroke="currentColor"
+        strokeWidth="1.2"
+      />
+    </svg>
   );
 }

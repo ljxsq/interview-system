@@ -3,111 +3,69 @@
 @import "shadcn/tailwind.css";
 
 /*
- * 只保留类名式 dark 变体，项目本身是「柔和可爱风」浅色主题，
+ * 只保留类名式 dark 变体，项目本身是「宣纸古风」浅色主题，
  * 不提供 .dark 配色。这样 shadcn 组件里的 dark: 工具类不会跟随系统深色模式生效。
  */
 @custom-variant dark (&:is(.dark *));
 
 /*
- * 柔和可爱风设计令牌（唯一的颜色/圆角/阴影来源）。
- * 页面里只引用这些语义化 token，避免十六进制颜色散落在组件中。
+ * 古风唯美设计令牌：唯一颜色来源。
+ * 三色体系：黛青 #2F4F4F、藕荷 #B8A9C9、月白 #F5F5F0；
+ * 页面底色为极浅宣纸 #FAF8F0。点缀色藕荷只用于兜底题标识。
  */
 @theme {
-  /* 底色与文字：暖白底 + 暖棕文字，正文对比度 > 4.5:1 */
-  --color-cream: #fff9f5;
-  --color-surface: #fffdfb;
-  --color-sand: #f3ece7;
-  --color-sand-100: #ede3dc;
-  --color-ink: #4a3f3a;
-  --color-ink-soft: #6e5f58;
+  /* 纸与墨：正文对比度 > 7:1，辅助说明 > 4.5:1 */
+  --color-xuan: #faf8f0;
+  --color-surface: #f5f5f0;
+  --color-sand: #efece5;
+  --color-sand-100: #e3dfd5;
+  --color-ink: #1f1f1c;
+  --color-ink-soft: #55534d;
 
-  /* 主色：柔粉 / 薄荷绿 / 蜜桃橙（低饱和暖色） */
-  --color-blush: #ffb6c1;
-  --color-blush-50: #fff2f5;
-  --color-blush-100: #ffe3e9;
-  --color-blush-200: #ffd1da;
-  --color-blush-600: #b23a5b;
-  --color-blush-700: #94304b;
+  /* 边框：rule 为卡片/分隔线的淡墨细线；edge 用于控件与标签描边，对纸面 ≥ 3:1 */
+  --color-rule: #d8dad4;
+  --color-rule-soft: #e7e9e4;
+  --color-edge: #7f827a;
 
-  --color-mint: #a8e6cf;
-  --color-mint-50: #effaf4;
-  --color-mint-100: #ddf5e9;
-  --color-mint-200: #c5eedc;
-  --color-mint-600: #2e8b6a;
-  --color-mint-700: #247054;
+  /* 藕荷：仅用于兜底题/兜底提示的细边框 */
+  --color-lotus: #b8a9c9;
+  --color-lotus-50: #f5f1f8;
+  --color-lotus-100: #ece5f2;
+  --color-lotus-200: #ddd3e8;
+  --color-lotus-600: #9383a8;
+  --color-lotus-700: #6f6182;
 
-  --color-peach: #ffd3b6;
-  --color-peach-50: #fff4ec;
-  --color-peach-100: #ffe8d8;
-  --color-peach-200: #ffdcc5;
-  --color-peach-600: #8a4b1f;
-  --color-peach-700: #713c19;
+  /* 黛青：主操作、完成态与提示，全部取自同一色相 */
+  --color-daiqing: #2f4f4f;
+  --color-daiqing-50: #eef2f2;
+  --color-daiqing-100: #dde5e4;
+  --color-daiqing-200: #c2d0ce;
+  --color-daiqing-600: #2f4f4f;
+  --color-daiqing-700: #243e3e;
+  --color-daiqing-800: #1b3030;
 
-  /* 录像区域使用的暖调深灰（替代纯黑） */
-  --color-night: #3a3330;
+  /* 录像区域的浓墨底（替代纯黑，仍属墨色） */
+  --color-night: #1f1e1b;
 
-  /* 圆润无衬线：Nunito（next/font 失败时整条链路自动回退） */
+  /* 正文用系统无衬线保证可读；标题用宋体 / 楷体衬线，字重 500 */
   --font-sans:
-    var(--font-nunito), ui-rounded, "Nunito", "Quicksand", system-ui,
-    sans-serif;
+    system-ui, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans SC", sans-serif;
+  --font-heading:
+    "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "KaiTi",
+    "楷体", "SimSun", serif;
 
-  /* 圆角统一 >= 16px */
-  --radius-control: 1rem;
-  --radius-card: 1.25rem;
-  --radius-pill: 9999px;
+  /*
+   * 圆角分层（仍克制，最大 8px）：
+   * control 6px —— 按钮、输入框、文本域、提示块等一切控件；
+   * card 8px —— 卡片、面板、报告总分卡；
+   * pill 4px —— 状态标签等小标签，不做胶囊形。
+   */
+  --radius-control: 6px;
+  --radius-card: 8px;
+  --radius-pill: 4px;
 
-  /* 只靠大面积低透明度柔和阴影表达层次，不用深色硬边框 */
-  --shadow-soft: 0 6px 18px -10px rgba(74, 63, 58, 0.22);
-  --shadow-card:
-    0 18px 40px -22px rgba(74, 63, 58, 0.28),
-    0 2px 10px -6px rgba(74, 63, 58, 0.12);
-  --shadow-float: 0 12px 28px -14px rgba(74, 63, 58, 0.3);
-
-  /* 录制按钮的柔和脉冲（motion-reduce 下由 animate-none 关闭） */
-  --animate-record-pulse: record-pulse 2.6s ease-in-out infinite;
-
-  /* 欢迎萌图的挥手（motion-reduce 下由 animate-none 关闭） */
-  --animate-mascot-wave: mascot-wave 2.6s ease-in-out infinite;
-
-  /* 报告页奔跑兔的后腿迈步（motion-reduce 下由 animate-none 关闭） */
-  --animate-rabbit-run: rabbit-run 1.2s ease-in-out infinite;
-}
-
-@keyframes mascot-wave {
-  0%,
-  100% {
-    transform: rotate(-12deg);
-  }
-
-  50% {
-    transform: rotate(12deg);
-  }
-}
-
-@keyframes rabbit-run {
-  0%,
-  100% {
-    transform: rotate(-15deg);
-  }
-
-  50% {
-    transform: rotate(13deg);
-  }
-}
-
-@keyframes record-pulse {
-  0%,
-  100% {
-    box-shadow:
-      0 0 0 0 rgba(255, 182, 193, 0.45),
-      0 12px 28px -14px rgba(74, 63, 58, 0.3);
-  }
-
-  50% {
-    box-shadow:
-      0 0 0 10px rgba(255, 182, 193, 0),
-      0 12px 28px -14px rgba(74, 63, 58, 0.3);
-  }
+  /* 不用投影：立体感交给 1px 细边框 */
 }
 
 @layer base {
@@ -115,37 +73,168 @@
     color-scheme: light;
   }
 
+  /*
+   * 月白/宣纸底色，留白为主；不叠加任何装饰纹理或渐变。
+   */
   body {
-    background-color: var(--color-cream);
+    background-color: var(--color-xuan);
     color: var(--color-ink);
     font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* 标题统一走衬线、字重 500，不做粗黑 */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: 0.02em;
   }
 
   ::selection {
-    background-color: var(--color-blush);
+    background-color: var(--color-daiqing-100);
     color: var(--color-ink);
   }
 
   /* 所有可点元素都有可见焦点环（键盘导航时出现） */
   :focus-visible {
-    outline: 3px solid var(--color-mint-700);
+    outline: 2px solid var(--color-daiqing-700);
     outline-offset: 2px;
   }
 
-  /* shadcn 组件默认依赖 border-border / outline-ring，这里统一指向糖果色 */
+  /* shadcn 组件默认依赖 border-border / outline-ring，这里统一指向纸墨色 */
   * {
     @apply border-border outline-ring/50;
   }
 }
 
 /*
+ * 古风构件：
+ * .panel        1px 细边框卡片，不用投影；
+ * .panel-plain  单线版框，用于内部小格；
+ * .seal         印章式标签，1px 线框 + 透明底，换色只需换 text-*。
+ */
+@layer components {
+  .panel {
+    position: relative;
+    isolation: isolate;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-card);
+  }
+
+  /*
+   * 角花：仅左上 / 右下两处，藤蔓贴边框内侧走一小段，末端一朵极简小花。
+   * 内联 SVG 背景（不引依赖、不加动效），线条始终在 16px 内边距环内，
+   * 不进入正文、按钮与分数区域；装饰层不吃指针事件。
+   */
+  .panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background-image:
+      url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='40'%20height='40'%20viewBox='0%200%2040%2040'%3E%3Cg%20fill='none'%20stroke='%232F4F4F'%20stroke-opacity='.28'%20stroke-width='1'%20stroke-linecap='round'%3E%3Cpath%20d='M26,4C16,4,8,9,5,18'/%3E%3Cpath%20d='M5,18V30'/%3E%3Cpath%20d='M14,6C15,10,13,12,9,13'/%3E%3Cpath%20d='M7,14C10,16,11,19,10,22'/%3E%3C/g%3E%3Cg%20fill='%23B8A9C9'%20fill-opacity='.55'%3E%3Ccircle%20cx='5.4'%20cy='33'%20r='1.5'/%3E%3Ccircle%20cx='3.1'%20cy='31.4'%20r='1.2'/%3E%3Ccircle%20cx='7.7'%20cy='31.4'%20r='1.2'/%3E%3Ccircle%20cx='3.6'%20cy='34.8'%20r='1.2'/%3E%3Ccircle%20cx='7.2'%20cy='34.8'%20r='1.2'/%3E%3C/g%3E%3Ccircle%20cx='5.4'%20cy='33'%20r='1'%20fill='%232F4F4F'%20fill-opacity='.4'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='40'%20height='40'%20viewBox='0%200%2040%2040'%3E%3Cg%20transform='rotate(180,20,20)'%3E%3Cg%20fill='none'%20stroke='%232F4F4F'%20stroke-opacity='.28'%20stroke-width='1'%20stroke-linecap='round'%3E%3Cpath%20d='M26,4C16,4,8,9,5,18'/%3E%3Cpath%20d='M5,18V30'/%3E%3Cpath%20d='M14,6C15,10,13,12,9,13'/%3E%3Cpath%20d='M7,14C10,16,11,19,10,22'/%3E%3C/g%3E%3Cg%20fill='%23B8A9C9'%20fill-opacity='.55'%3E%3Ccircle%20cx='5.4'%20cy='33'%20r='1.5'/%3E%3Ccircle%20cx='3.1'%20cy='31.4'%20r='1.2'/%3E%3Ccircle%20cx='7.7'%20cy='31.4'%20r='1.2'/%3E%3Ccircle%20cx='3.6'%20cy='34.8'%20r='1.2'/%3E%3Ccircle%20cx='7.2'%20cy='34.8'%20r='1.2'/%3E%3C/g%3E%3Ccircle%20cx='5.4'%20cy='33'%20r='1'%20fill='%232F4F4F'%20fill-opacity='.4'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position:
+      2px 2px,
+      calc(100% - 2px) calc(100% - 2px);
+    background-size:
+      40px 40px,
+      40px 40px;
+  }
+
+  .panel-plain {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-card);
+  }
+
+  .seal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.0625rem 0.5rem;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-pill);
+    background-color: transparent;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+  }
+
+  /* 格与格之间的细线：横向 / 纵向，比版框更淡一线 */
+  .rule-t {
+    border-top: 1px solid var(--color-rule-soft);
+  }
+
+  .rule-b {
+    border-bottom: 1px solid var(--color-rule-soft);
+  }
+
+  /*
+   * 全站背景层（app/layout.tsx 挂载）：直接引用水墨参考图，不做重绘。
+   * 原图为竖幅，横向视口用 cover 取底部景带（柳丛 / 岸石 / 石拱桥 / 飞鸟）；
+   * 竖屏移动端改为水平偏右，同时保留右上枯枝与底部桥。纯静态，无动画。
+   */
+  .scene-background {
+    overflow: hidden;
+  }
+
+  .scene-photo {
+    position: absolute;
+    inset: 0;
+    background-image: url("/background-scene.png");
+    background-repeat: no-repeat;
+    background-color: var(--color-xuan);
+    background-size: cover;
+    background-position: right bottom;
+  }
+
+  /*
+   * 月白蒙层：页头区（视口上部）加厚到接近实色纸面，
+   * 保证直接压在背景上的标题、副标题对比度；向下渐薄，保留画面构图。
+   */
+  .scene-veil {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      to bottom,
+      rgb(250 248 240 / 0.94) 0%,
+      rgb(250 248 240 / 0.92) 28%,
+      rgb(250 248 240 / 0.84) 62%,
+      rgb(250 248 240 / 0.74) 100%
+    );
+  }
+
+  /*
+   * 登录页人物插画：原图米白底已处理为透明（人物轮廓自带抗锯齿软边），
+   * 不再使用正片叠底与方形羽化；只做轻微降饱和，使其与纸色同一层。
+   */
+  .login-portrait {
+    filter: saturate(0.95);
+  }
+}
+
+/* 移动端 375：竖屏 cover 只裁左右，位置偏右，枯枝与桥同时入画 */
+@media (max-width: 640px) {
+  .scene-photo {
+    background-position: 82% center;
+  }
+}
+
+/*
  * shadcn 的语义变量 → Tailwind 颜色工具类（bg-background、text-primary 等）。
- * 值来自下方 :root 的糖果色映射。
+ * 值来自下方 :root 的纸墨色映射。
  */
 @theme inline {
   --font-heading:
-    var(--font-nunito), ui-rounded, "Nunito", "Quicksand", system-ui,
-    sans-serif;
+    "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "KaiTi",
+    "楷体", "SimSun", serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -187,40 +276,40 @@
 }
 
 /*
- * shadcn 语义变量映射：全部指向糖果色 token，不保留默认的灰白黑。
- * --radius 设为 16px，使 shadcn 的 rounded-lg（按钮/输入框）正好 16px。
+ * shadcn 语义变量映射：全部指向三色体系，不保留默认的灰白黑。
+ * --radius 设为 6px，使 shadcn 的 rounded-lg（按钮/输入框）与控件 token 一致。
  */
 :root {
-  --background: #fff9f5; /* cream */
-  --foreground: #4a3f3a; /* ink */
-  --card: #fffdfb; /* surface */
-  --card-foreground: #4a3f3a; /* ink */
-  --popover: #fffdfb; /* surface */
-  --popover-foreground: #4a3f3a; /* ink */
-  --primary: #ffb6c1; /* blush */
-  --primary-foreground: #4a3f3a; /* ink */
-  --secondary: #f3ece7; /* sand */
-  --secondary-foreground: #4a3f3a; /* ink */
-  --muted: #f3ece7; /* sand */
-  --muted-foreground: #6e5f58; /* ink-soft */
-  --accent: #ddf5e9; /* mint-100 */
-  --accent-foreground: #4a3f3a; /* ink */
-  --destructive: #b23a5b; /* blush-600 */
-  --border: #ede3dc; /* sand-100 */
-  --input: #ede3dc; /* sand-100 */
-  --ring: #247054; /* mint-700 */
-  --chart-1: #ffb6c1; /* blush */
-  --chart-2: #a8e6cf; /* mint */
-  --chart-3: #ffd3b6; /* peach */
-  --chart-4: #94304b; /* blush-700 */
-  --chart-5: #247054; /* mint-700 */
-  --radius: 1rem;
-  --sidebar: #fff9f5;
-  --sidebar-foreground: #4a3f3a;
-  --sidebar-primary: #ffb6c1;
-  --sidebar-primary-foreground: #4a3f3a;
-  --sidebar-accent: #f3ece7;
-  --sidebar-accent-foreground: #4a3f3a;
-  --sidebar-border: #ede3dc;
-  --sidebar-ring: #247054;
+  --background: #faf8f0; /* xuan */
+  --foreground: #1f1f1c; /* ink */
+  --card: #f5f5f0; /* surface */
+  --card-foreground: #1f1f1c; /* ink */
+  --popover: #f5f5f0; /* surface */
+  --popover-foreground: #1f1f1c; /* ink */
+  --primary: #243e3e; /* daiqing-700 */
+  --primary-foreground: #f5f5f0; /* surface */
+  --secondary: #efece5; /* sand */
+  --secondary-foreground: #1f1f1c; /* ink */
+  --muted: #efece5; /* sand */
+  --muted-foreground: #55534d; /* ink-soft */
+  --accent: #ece5f2; /* lotus-100 */
+  --accent-foreground: #1f1f1c; /* ink */
+  --destructive: #2f4f4f; /* daiqing */
+  --border: #7f827a; /* edge：控件描边 ≥ 3:1 */
+  --input: #7f827a; /* edge */
+  --ring: #2f4f4f; /* daiqing */
+  --chart-1: #2f4f4f; /* daiqing */
+  --chart-2: #b8a9c9; /* lotus */
+  --chart-3: #c2d0ce; /* daiqing-200 */
+  --chart-4: #243e3e; /* daiqing-700 */
+  --chart-5: #f5f5f0; /* surface */
+  --radius: 6px;
+  --sidebar: #faf8f0;
+  --sidebar-foreground: #1f1f1c;
+  --sidebar-primary: #243e3e;
+  --sidebar-primary-foreground: #f5f5f0;
+  --sidebar-accent: #efece5;
+  --sidebar-accent-foreground: #1f1f1c;
+  --sidebar-border: #7f827a;
+  --sidebar-ring: #2f4f4f;
 }

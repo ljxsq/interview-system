@@ -294,9 +294,9 @@ export default function VideoRecorder({
       : '开始答题';
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {/* 唯一的视频容器：录制时是实时预览，有视频时是回看，无视频时是占位图。 */}
-      <div className="relative flex h-56 w-full items-center justify-center overflow-hidden rounded-card bg-night shadow-card">
+      <div className="relative flex h-56 w-full items-center justify-center overflow-hidden rounded-card border border-rule bg-night">
         {/* 实时预览始终挂载，仅录制时可见，保证 getUserMedia 后能立即绑定 srcObject。 */}
         <video
           ref={videoRef}
@@ -335,8 +335,8 @@ export default function VideoRecorder({
             <p
               className={
                 playbackFailed
-                  ? 'text-xs text-peach'
-                  : 'text-xs text-peach-100'
+                  ? 'text-xs text-daiqing-200'
+                  : 'text-xs text-daiqing-100'
               }
             >
               {playbackFailed
@@ -354,22 +354,20 @@ export default function VideoRecorder({
           disabled={disabled}
           className={
             recording
-              ? 'rounded-pill bg-blush px-6 py-2.5 font-semibold text-ink shadow-float transition-colors hover:bg-blush-200 disabled:cursor-not-allowed disabled:opacity-60'
-              : `rounded-pill bg-mint px-6 py-2.5 font-semibold text-ink shadow-float transition-colors hover:bg-mint-200 disabled:cursor-not-allowed disabled:opacity-60 ${
-                  disabled ? '' : 'animate-record-pulse motion-reduce:animate-none'
-                }`
+              ? 'rounded-control border border-ink bg-ink px-6 py-2.5 font-medium text-surface transition-colors hover:bg-night disabled:cursor-not-allowed disabled:opacity-60'
+              : 'rounded-control border border-daiqing-600 bg-surface px-6 py-2.5 font-medium text-daiqing-700 transition-colors hover:bg-daiqing-50 disabled:cursor-not-allowed disabled:opacity-60'
           }
         >
           {buttonLabel}
         </button>
 
         {recording && (
-          <span className="text-sm font-semibold text-blush-700">● 正在录制…</span>
+          <span className="text-sm font-medium text-daiqing-700">● 正在录制…</span>
         )}
       </div>
 
       {error && (
-        <p role="alert" className="rounded-control bg-blush-50 px-4 py-3 text-sm text-blush-700 shadow-soft">
+        <p role="alert" className="rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700">
           {error}
         </p>
       )}
@@ -377,7 +375,7 @@ export default function VideoRecorder({
       {audioWarning && (
         <p
           role="status"
-          className="rounded-control bg-peach-50 px-4 py-3 text-sm text-peach-700 shadow-soft"
+          className="rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700"
         >
           {audioWarning}
         </p>

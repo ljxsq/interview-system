@@ -410,25 +410,29 @@ export default function NewInterviewPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-3xl space-y-6 p-6">
-      <header>
-        <h1 className="text-2xl font-bold text-ink">面试准备-生成面试题</h1>
-        <p className="mt-1 text-sm text-ink-soft">
+    <main className="mx-auto w-full max-w-3xl space-y-12 p-6 pb-12">
+      <header className="border-b border-rule pb-6">
+        <h1 className="text-2xl font-medium text-daiqing-700">面试准备-生成面试题</h1>
+        <p className="mt-2 text-sm text-ink-soft">
           填写或上传简历与岗位描述，AI 将根据两者生成面试题（通常需要 40–60 秒）。
         </p>
       </header>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-12">
         {prefillError && (
-          <p className="rounded-control bg-blush-50 px-4 py-3 text-sm text-blush-700 shadow-soft">
+          <p className="rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700">
             {prefillError}
           </p>
         )}
 
-        <div className="space-y-1.5">
-          <Label htmlFor="resume-text" className="text-sm font-semibold text-ink">
-            简历
-          </Label>
+        {/* 格一：简历 */}
+        <section className="panel space-y-4 p-6">
+          <div className="border-b border-rule-soft pb-3">
+            <Label htmlFor="resume-text" className="text-sm font-medium text-ink">
+              简历
+            </Label>
+          </div>
+
           <Textarea
             id="resume-text"
             value={resumeText}
@@ -436,64 +440,68 @@ export default function NewInterviewPage() {
             disabled={resumeBusy}
             rows={9}
             maxLength={5000}
-            className="h-52 max-h-52 resize-none overflow-y-auto field-sizing-fixed rounded-control border-blush-100 bg-surface px-4 py-3 text-ink shadow-soft placeholder:text-ink-soft/70 focus-visible:border-blush-200 focus-visible:ring-0 disabled:bg-sand disabled:text-ink-soft disabled:opacity-100"
+            className="h-52 max-h-52 resize-none overflow-y-auto field-sizing-fixed rounded-control border-edge bg-surface px-4 py-3 text-ink placeholder:text-ink-soft focus-visible:border-daiqing-600 focus-visible:ring-0 disabled:bg-sand disabled:text-ink-soft disabled:opacity-100"
             placeholder="粘贴简历文本，或选择文件后自动识别"
           />
-        </div>
 
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-3">
-            <input
-              ref={resumeInputRef}
-              type="file"
-              accept={RESUME_ACCEPT}
-              disabled={resumeBusy}
-              onChange={(event) => handleFileChange('resume', event)}
-              className="hidden"
-              tabIndex={-1}
-            />
-            <Button
-              type="button"
-              onClick={() => resumeInputRef.current?.click()}
-              disabled={resumeBusy}
-              aria-label="选择文件并识别"
-              className="h-10 rounded-pill border border-mint-200 bg-mint-50 px-4 text-sm font-semibold text-mint-700 shadow-soft transition-colors hover:bg-mint-100 focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {resumeExtracting ? '识别中…' : '选择文件并识别'}
-            </Button>
-            {resumeFile && (
-              <span className="min-w-0 break-all text-xs text-ink-soft">
-                已选择：{resumeFile.name}（
-                {Math.ceil(resumeFile.size / 1024)} KB）
-              </span>
-            )}
-            {resumeOverwritten && (
-              <span className="text-xs font-medium text-mint-700">
-                已由文件覆盖
-              </span>
-            )}
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-3">
+              <input
+                ref={resumeInputRef}
+                type="file"
+                accept={RESUME_ACCEPT}
+                disabled={resumeBusy}
+                onChange={(event) => handleFileChange('resume', event)}
+                className="hidden"
+                tabIndex={-1}
+              />
+              <Button
+                type="button"
+                onClick={() => resumeInputRef.current?.click()}
+                disabled={resumeBusy}
+                aria-label="选择文件并识别"
+                className="h-10 rounded-control border border-edge bg-surface px-4 text-sm font-medium text-daiqing-700 transition-colors hover:bg-daiqing-50 focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {resumeExtracting ? '识别中…' : '选择文件并识别'}
+              </Button>
+              {resumeFile && (
+                <span className="min-w-0 break-all text-xs text-ink-soft">
+                  已选择：{resumeFile.name}（
+                  {Math.ceil(resumeFile.size / 1024)} KB）
+                </span>
+              )}
+              {resumeOverwritten && (
+                <span className="text-xs font-medium text-daiqing-700">
+                  已由文件覆盖
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-ink-soft">
+              支持 PDF / DOCX / TXT / MD，单文件 ≤ 10 MB
+            </p>
           </div>
-          <p className="text-xs text-ink-soft">
-            支持 PDF / DOCX / TXT / MD，单文件 ≤ 10 MB
-          </p>
-        </div>
 
-        {resumeError && (
-          <p className="rounded-control bg-blush-50 px-4 py-3 text-sm text-blush-700 shadow-soft">
-            {resumeError}
-          </p>
-        )}
+          {resumeError && (
+            <p className="rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700">
+              {resumeError}
+            </p>
+          )}
 
-        {resumeNotice && (
-          <p className="rounded-control bg-peach-50 px-4 py-3 text-sm text-peach-700 shadow-soft">
-            {resumeNotice}
-          </p>
-        )}
+          {resumeNotice && (
+            <p className="rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700">
+              {resumeNotice}
+            </p>
+          )}
+        </section>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="jd-text" className="text-sm font-semibold text-ink">
-            岗位描述（JD）
-          </Label>
+        {/* 格二：岗位描述 */}
+        <section className="panel space-y-4 p-6">
+          <div className="border-b border-rule-soft pb-3">
+            <Label htmlFor="jd-text" className="text-sm font-medium text-ink">
+              岗位描述（JD）
+            </Label>
+          </div>
+
           <Textarea
             id="jd-text"
             value={jdText}
@@ -501,79 +509,79 @@ export default function NewInterviewPage() {
             disabled={jdBusy}
             rows={9}
             maxLength={5000}
-            className="h-52 max-h-52 resize-none overflow-y-auto field-sizing-fixed rounded-control border-blush-100 bg-surface px-4 py-3 text-ink shadow-soft placeholder:text-ink-soft/70 focus-visible:border-blush-200 focus-visible:ring-0 disabled:bg-sand disabled:text-ink-soft disabled:opacity-100"
+            className="h-52 max-h-52 resize-none overflow-y-auto field-sizing-fixed rounded-control border-edge bg-surface px-4 py-3 text-ink placeholder:text-ink-soft focus-visible:border-daiqing-600 focus-visible:ring-0 disabled:bg-sand disabled:text-ink-soft disabled:opacity-100"
             placeholder="粘贴岗位描述文本，或上传截图后自动识别"
           />
-        </div>
 
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-3">
-            <input
-              ref={jdInputRef}
-              type="file"
-              accept={JD_ACCEPT}
-              disabled={jdBusy}
-              onChange={(event) => handleFileChange('jd', event)}
-              className="hidden"
-              tabIndex={-1}
-            />
-            <Button
-              type="button"
-              onClick={() => jdInputRef.current?.click()}
-              disabled={jdBusy}
-              aria-label="上传图片并识别"
-              className="h-10 rounded-pill border border-mint-200 bg-mint-50 px-4 text-sm font-semibold text-mint-700 shadow-soft transition-colors hover:bg-mint-100 focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {jdExtracting ? '识别中…' : '上传图片并识别'}
-            </Button>
-            {jdFile && (
-              <span className="min-w-0 break-all text-xs text-ink-soft">
-                已选择：{jdFile.name}（{Math.ceil(jdFile.size / 1024)} KB）
-              </span>
-            )}
-            {jdOverwritten && (
-              <span className="text-xs font-medium text-mint-700">
-                已由文件覆盖
-              </span>
-            )}
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-3">
+              <input
+                ref={jdInputRef}
+                type="file"
+                accept={JD_ACCEPT}
+                disabled={jdBusy}
+                onChange={(event) => handleFileChange('jd', event)}
+                className="hidden"
+                tabIndex={-1}
+              />
+              <Button
+                type="button"
+                onClick={() => jdInputRef.current?.click()}
+                disabled={jdBusy}
+                aria-label="上传图片并识别"
+                className="h-10 rounded-control border border-edge bg-surface px-4 text-sm font-medium text-daiqing-700 transition-colors hover:bg-daiqing-50 focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {jdExtracting ? '识别中…' : '上传图片并识别'}
+              </Button>
+              {jdFile && (
+                <span className="min-w-0 break-all text-xs text-ink-soft">
+                  已选择：{jdFile.name}（{Math.ceil(jdFile.size / 1024)} KB）
+                </span>
+              )}
+              {jdOverwritten && (
+                <span className="text-xs font-medium text-daiqing-700">
+                  已由文件覆盖
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-ink-soft">
+              支持 PNG / JPG / JPEG / WEBP，单文件 ≤ 10 MB
+            </p>
           </div>
-          <p className="text-xs text-ink-soft">
-            支持 PNG / JPG / JPEG / WEBP，单文件 ≤ 10 MB
-          </p>
-        </div>
 
-        {jdError && (
-          <p className="rounded-control bg-blush-50 px-4 py-3 text-sm text-blush-700 shadow-soft">
-            {jdError}
-          </p>
-        )}
+          {jdError && (
+            <p className="rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700">
+              {jdError}
+            </p>
+          )}
 
-        {jdNotice && (
-          <p className="rounded-control bg-peach-50 px-4 py-3 text-sm text-peach-700 shadow-soft">
-            {jdNotice}
-          </p>
-        )}
+          {jdNotice && (
+            <p className="rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700">
+              {jdNotice}
+            </p>
+          )}
+        </section>
 
         {error && (
-          <p className="rounded-control bg-blush-50 px-4 py-3 text-sm text-blush-700 shadow-soft">
+          <p className="rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700">
             {error}
           </p>
         )}
 
         {phase === 'extracting' && (
-          <div className="rounded-control bg-mint-50 px-4 py-3 text-sm text-mint-700 shadow-soft">
+          <div className="rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700">
             正在提取文案，请稍候…
           </div>
         )}
 
         {loading && (
-          <div className="flex items-center gap-3 rounded-control bg-peach-50 px-4 py-3 text-sm text-peach-700 shadow-soft">
+          <div className="flex items-center gap-3 rounded-control border border-daiqing-600 bg-daiqing-50 px-4 py-3 text-sm text-daiqing-700">
             <WaitingIllustration
               className="h-16 w-auto shrink-0"
               label="正在生成面试题"
             />
             <div>
-              <p className="font-semibold">正在生成面试题，请勿关闭页面…</p>
+              <p className="font-medium">正在生成面试题，请勿关闭页面…</p>
               <p className="mt-1">已等待 {elapsed} 秒，预计 40–60 秒。</p>
             </div>
           </div>
@@ -590,7 +598,7 @@ export default function NewInterviewPage() {
           title={
             anyExtracting ? '文件识别中，请等待识别完成后再生成' : undefined
           }
-          className="h-11 w-full rounded-control bg-blush px-6 text-base font-semibold text-ink shadow-float transition-colors hover:bg-blush-200 focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          className="h-11 w-full rounded-control bg-daiqing-700 px-6 text-base font-medium text-surface transition-colors hover:bg-daiqing-800 focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
         >
           {loading ? '生成中…' : '生成面试题'}
         </Button>

@@ -100,38 +100,58 @@ export default async function InterviewReportPage({ params }: PageProps) {
   );
 
   return (
-    <main className="mx-auto w-full max-w-3xl space-y-5 p-6 pb-10">
-      <header className="flex flex-wrap items-center justify-between gap-3">
+    <main className="mx-auto w-full max-w-3xl space-y-12 p-6 pb-12">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-rule pb-6">
         <div>
-          <h1 className="flex items-center gap-2 text-2xl font-bold text-ink">
-            <span aria-hidden="true">🧸</span>
+          <h1 className="flex items-center gap-3 text-2xl font-medium text-daiqing-700">
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="size-6 shrink-0 text-daiqing-700"
+            >
+              <rect
+                x="3.5"
+                y="3.5"
+                width="17"
+                height="17"
+                rx="2"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+              />
+              <path
+                d="M7.5 8.5h9M7.5 12h9M7.5 15.5h9"
+                stroke="currentColor"
+                strokeWidth="1.2"
+              />
+            </svg>
             面试报告
           </h1>
-          <p className="mt-1 text-sm text-ink-soft">
+          <p className="mt-2 text-sm text-ink-soft">
             会话 ID：{sessionId}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Link
             href={`/interview/new?from=${encodeURIComponent(sessionId)}`}
-            className="rounded-pill bg-mint px-4 py-2 text-sm font-semibold text-ink shadow-soft transition-colors hover:bg-mint-200"
+            className="inline-flex h-10 items-center rounded-control bg-daiqing-700 px-4 text-sm font-medium text-surface transition-colors hover:bg-daiqing-800"
           >
             重新面试
           </Link>
           <Link
             href={`/interview/${sessionId}`}
-            className="rounded-pill border border-blush-100 bg-surface px-4 py-2 text-sm font-medium text-ink shadow-soft transition-colors hover:bg-blush-50"
+            className="inline-flex h-10 items-center rounded-control border border-edge bg-surface px-4 text-sm font-medium text-ink transition-colors hover:bg-xuan"
           >
             返回答题页
           </Link>
         </div>
       </header>
 
-      <Card className="overflow-hidden rounded-card bg-surface py-0 shadow-card ring-0">
-        <div className="flex flex-col gap-5 bg-[linear-gradient(135deg,var(--color-blush-50)_0%,var(--color-cream)_45%,var(--color-mint-50)_100%)] p-6 sm:flex-row sm:items-end sm:justify-between">
+      <Card className="panel overflow-hidden py-0">
+        <div className="flex flex-col gap-6 p-8 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-sm font-medium text-ink-soft">总分</p>
-            <p className="mt-1 text-5xl font-bold leading-none text-ink">
+            <p className="mt-2 font-heading text-6xl font-medium leading-none text-daiqing-700">
               {formatAverage(report.total_score)}
             </p>
           </div>
@@ -152,7 +172,7 @@ export default async function InterviewReportPage({ params }: PageProps) {
         </div>
       </Card>
 
-      <section className="flex flex-wrap items-center gap-x-6 gap-y-1 rounded-card bg-sand px-4 py-3 text-sm text-ink-soft shadow-soft">
+      <section className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-card border border-edge bg-surface px-4 py-4 text-sm text-ink-soft">
         <span>
           已评估：{report.evaluated_questions} / {report.total_questions}
         </span>
@@ -170,21 +190,19 @@ export default async function InterviewReportPage({ params }: PageProps) {
       </section>
 
       {report.fallback_count > 0 && (
-        <Alert className="gap-1 rounded-card border-0 bg-peach-50 px-4 py-3 text-sm text-peach-700 shadow-soft">
-          <p className="font-medium">
-            共 {report.fallback_count} 道题使用兜底评分，成绩仅供参考
-          </p>
-          <p className="text-xs text-peach-700/80">
+        <Alert className="gap-1 rounded-control border border-lotus-700 bg-surface px-4 py-3 text-sm text-ink">
+          <p className="font-medium">共 {report.fallback_count} 道题使用兜底评分，成绩仅供参考</p>
+          <p className="text-xs text-ink-soft">
             涉及题目：{report.fallback_question_ids.join('、')}
           </p>
         </Alert>
       )}
 
       {report.evaluated_questions === 0 && (
-        <Card className="rounded-card bg-surface py-0 shadow-card ring-0">
-          <div className="flex flex-col items-center gap-3 px-6 py-8 text-center">
+        <Card className="panel py-0">
+          <div className="flex flex-col items-center gap-4 px-6 py-12 text-center">
             <RunningRabbit className="h-28 w-auto shrink-0" />
-            <p className="text-sm font-semibold text-ink">
+            <p className="text-sm font-medium text-ink">
               正在评估中，请等待……
             </p>
             <p className="max-w-sm text-xs leading-5 text-ink-soft">
@@ -194,16 +212,16 @@ export default async function InterviewReportPage({ params }: PageProps) {
         </Card>
       )}
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">逐题明细</h2>
+      <section className="space-y-4">
+        <h2 className="border-b border-rule-soft pb-3 text-lg font-medium text-ink">逐题明细</h2>
 
         {report.items.map((item, index) => (
           <article
             key={item.question_id}
             className={
               item.is_fallback
-                ? 'space-y-3 rounded-card bg-blush-50 p-4 shadow-card'
-                : 'space-y-3 rounded-card bg-surface p-4 shadow-card'
+                ? 'panel space-y-4 border-lotus-700 p-6'
+                : 'panel space-y-4 p-6'
             }
           >
             <div className="flex items-start justify-between gap-3">
@@ -211,14 +229,14 @@ export default async function InterviewReportPage({ params }: PageProps) {
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge
                     variant="secondary"
-                    className="h-auto rounded-pill bg-blush-100 px-3 py-1 text-xs font-semibold text-blush-700"
+                    className="h-auto rounded-pill border border-daiqing-600 bg-surface px-3 py-1 text-xs font-medium text-daiqing-700"
                   >
                     第 {index + 1} 题
                   </Badge>
                   {item.is_fallback && (
                     <Badge
                       variant="secondary"
-                      className="h-auto rounded-pill bg-peach-50 px-3 py-1 text-xs font-semibold text-peach-700"
+                      className="h-auto rounded-pill border border-lotus-700 bg-surface px-3 py-1 text-xs font-medium text-lotus-700"
                     >
                       兜底评分
                     </Badge>
@@ -226,7 +244,7 @@ export default async function InterviewReportPage({ params }: PageProps) {
                   {item.evaluation_pending && (
                     <Badge
                       variant="secondary"
-                      className="h-auto rounded-pill bg-peach-100 px-3 py-1 text-xs font-semibold text-peach-700"
+                      className="h-auto rounded-pill border border-daiqing-600 bg-surface px-3 py-1 text-xs font-medium text-daiqing-700"
                     >
                       未评估
                     </Badge>
@@ -234,7 +252,7 @@ export default async function InterviewReportPage({ params }: PageProps) {
                   {!item.answered && !item.evaluation_pending && (
                     <Badge
                       variant="secondary"
-                      className="h-auto rounded-pill bg-sand px-3 py-1 text-xs font-medium text-ink-soft"
+                      className="h-auto rounded-pill border border-rule bg-sand px-3 py-1 text-xs font-medium text-ink-soft"
                     >
                       未作答
                     </Badge>
@@ -244,7 +262,7 @@ export default async function InterviewReportPage({ params }: PageProps) {
               </div>
 
               <div className="shrink-0 text-right">
-                <p className="text-2xl font-bold text-ink">
+                <p className="font-heading text-2xl font-medium text-daiqing-700">
                   {formatAverage(item.score)}
                 </p>
                 <p className="text-xs text-ink-soft">
@@ -273,7 +291,7 @@ export default async function InterviewReportPage({ params }: PageProps) {
             </div>
 
             <div>
-              <h3 className="text-xs font-semibold text-ink-soft">评语</h3>
+              <h3 className="text-xs font-medium text-ink-soft">评语</h3>
               <p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-ink">
                 {item.comment ??
                   (item.evaluation_pending ? '待评估' : '—')}
@@ -286,7 +304,7 @@ export default async function InterviewReportPage({ params }: PageProps) {
       <footer className="pt-2">
         <Link
           href={`/interview/${sessionId}`}
-          className="text-sm font-medium text-ink underline decoration-blush decoration-2 underline-offset-4"
+          className="inline-flex h-10 items-center text-sm font-medium text-ink underline decoration-daiqing-600 decoration-1 underline-offset-4"
         >
           返回答题页继续面试
         </Link>
@@ -297,9 +315,9 @@ export default async function InterviewReportPage({ params }: PageProps) {
 
 function ScorePill({ label, value }: { label: string; value: string }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-pill border border-blush-100 bg-surface/90 px-3 py-1.5 text-xs shadow-soft">
+    <span className="inline-flex items-center gap-2 rounded-pill border border-edge bg-surface px-3 py-1.5 text-xs">
       <span className="text-ink-soft">{label}</span>
-      <span className="font-semibold text-ink">{value}</span>
+      <span className="font-medium text-daiqing-700">{value}</span>
     </span>
   );
 }
@@ -319,11 +337,11 @@ function PointList({
     <div
       className={
         tone === 'covered'
-          ? 'rounded-control bg-mint-50 p-3'
-          : 'rounded-control bg-peach-50 p-3'
+          ? 'rounded-control border border-rule bg-surface p-4'
+          : 'rounded-control border border-rule-soft bg-surface p-4'
       }
     >
-      <h3 className="text-xs font-semibold text-ink-soft">{title}</h3>
+      <h3 className="text-xs font-medium text-ink-soft">{title}</h3>
       {points.length > 0 ? (
         <ul className="mt-1 list-disc space-y-1 pl-4 text-sm">
           {points.map((point) => (

@@ -1,18 +1,23 @@
 interface WaitingIllustrationProps {
   /** 控制插画尺寸的类名（保持宽高比，建议用 h-* + w-auto）。 */
   className?: string;
-  /** 无障碍描述，默认为「坐着等待的小人」。 */
+  /** 无障碍描述，默认为「执卷诵读的小童」。 */
   label?: string;
 }
 
 /**
- * 坐着等待的小人：单色线稿 + 柔粉/薄荷/蜜桃点缀。
+ * 执卷诵读的小童：水墨线稿 + 黛青点缀，身旁立一盏灯笼。
  * 用于答题页与新建页的加载/等待态；纯内联 SVG，不依赖外部资源。
  */
 export function WaitingIllustration({
   className,
-  label = '坐着等待的小人',
+  label = '执卷诵读的小童',
 }: WaitingIllustrationProps) {
+  const ink = '#262623';
+  const paper = '#F5F5F0';
+  const wash = '#E3EDEB';
+  const accent = '#2F4F4F';
+
   return (
     <svg
       viewBox="0 0 160 120"
@@ -22,107 +27,130 @@ export function WaitingIllustration({
       className={className}
       fill="none"
     >
-      {/* 地面柔影 */}
-      <ellipse cx="80" cy="109" rx="52" ry="6" fill="#F3ECE7" />
+      {/* 地面淡墨 */}
+      <ellipse cx="80" cy="109" rx="52" ry="6" fill="#E3E0D8" />
 
-      {/* 凳子 */}
+      {/* 木凳 */}
       <rect
         x="46"
         y="83"
         width="50"
-        height="8"
-        rx="4"
-        fill="#FFE3E9"
-        stroke="#4A3F3A"
-        strokeWidth="1.6"
+        height="7"
+        rx="2"
+        fill={wash}
+        stroke={ink}
+        strokeWidth="1.5"
       />
-      <path
-        d="M54 91v13M88 91v13"
-        stroke="#4A3F3A"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
+      <path d="M54 90v12M88 90v12" stroke={ink} strokeWidth="1.5" strokeLinecap="round" />
 
-      {/* 小人：腿 → 身体 → 手臂 → 头 */}
+      {/* 小童：长衫 → 头 → 发 */}
       <path
-        d="M66 84v10h9M78 84v10h9"
-        stroke="#4A3F3A"
-        strokeWidth="1.8"
-        strokeLinecap="round"
+        d="M55 47c-6 2-9 7-9 14v23h26v-23c0-7-3-12-9-14z"
+        fill={paper}
+        stroke={ink}
+        strokeWidth="1.5"
       />
       <path
-        d="M62 44c-7 1-10 7-10 14v26h20v-26c0-7-3-13-10-14z"
-        fill="#FFFDFB"
-        stroke="#4A3F3A"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M70 54c5 2 8 6 9 11"
-        stroke="#4A3F3A"
-        strokeWidth="1.8"
-        strokeLinecap="round"
+        d="M58 47l6 7 6-7"
+        stroke={ink}
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+        fill="none"
       />
       <circle
-        cx="62"
-        cy="33"
+        cx="64"
+        cy="36"
         r="11"
-        fill="#FFFDFB"
-        stroke="#4A3F3A"
-        strokeWidth="1.8"
+        fill={paper}
+        stroke={ink}
+        strokeWidth="1.5"
       />
       <path
-        d="M52 31c1-8 5-12 10-12s10 4 11 12c-6-3-15-3-21 0z"
-        fill="#FFD3B6"
-        stroke="#4A3F3A"
-        strokeWidth="1.4"
+        d="M54 31c1-7 4-10 10-10s9 3 10 10c-6-3-14-3-20 0z"
+        fill={ink}
+        fillOpacity="0.9"
+        stroke={ink}
+        strokeWidth="1.2"
         strokeLinejoin="round"
       />
-      <circle cx="58" cy="35" r="1.6" fill="#4A3F3A" />
-      <circle cx="66" cy="35" r="1.6" fill="#4A3F3A" />
+      <circle cx="60" cy="37" r="1.5" fill={ink} />
+      <circle cx="68" cy="37" r="1.5" fill={ink} />
       <path
-        d="M58 40c2 2.2 6 2.2 8 0"
-        stroke="#4A3F3A"
-        strokeWidth="1.4"
+        d="M61 42c2 1.6 4 1.6 6 0"
+        stroke={ink}
+        strokeWidth="1.2"
         strokeLinecap="round"
       />
-      <circle cx="54.5" cy="39" r="2" fill="#FFB6C1" opacity="0.7" />
-      <circle cx="69.5" cy="39" r="2" fill="#FFB6C1" opacity="0.7" />
+      {/* 腮上一点黛青 */}
+      <circle cx="56" cy="40" r="1.6" fill={accent} opacity="0.3" />
+      <circle cx="72" cy="40" r="1.6" fill={accent} opacity="0.3" />
 
-      {/* 小盆栽 */}
-      <rect
-        x="108"
-        y="95"
-        width="24"
-        height="14"
-        rx="6"
-        fill="#FFD3B6"
-        stroke="#4A3F3A"
-        strokeWidth="1.6"
-      />
+      {/* 双手捧着的卷轴 */}
+      <g>
+        <rect
+          x="49"
+          y="56"
+          width="30"
+          height="9"
+          fill={paper}
+          stroke={ink}
+          strokeWidth="1.3"
+        />
+        <ellipse
+          cx="49"
+          cy="60.5"
+          rx="3.5"
+          ry="6.5"
+          fill={wash}
+          stroke={ink}
+          strokeWidth="1.3"
+        />
+        <ellipse
+          cx="79"
+          cy="60.5"
+          rx="3.5"
+          ry="6.5"
+          fill={wash}
+          stroke={ink}
+          strokeWidth="1.3"
+        />
+        <rect x="63" y="57.8" width="7" height="5.4" fill={accent} fillOpacity="0.8" />
+        <path
+          d="M52 55c-3 0-5 2-5 4M76 55c3 0 5 2 5 4"
+          stroke={ink}
+          strokeWidth="1.3"
+          strokeLinecap="round"
+        />
+      </g>
+
+      {/* 灯笼：竹竿 + 灯身 + 流苏 */}
+      <path d="M122 96v-46" stroke={ink} strokeWidth="1.4" strokeLinecap="round" />
+      <ellipse cx="122" cy="34" rx="9" ry="11" fill="#DDE5E4" stroke={ink} strokeWidth="1.4" />
       <path
-        d="M120 95c0-8 2-12 6-16M120 91c-6-2-9-6-9-10M120 89c5-2 7-6 7-9"
-        stroke="#247054"
-        strokeWidth="1.6"
+        d="M113 29h18M113 39h18M122 23v-1M122 45v4"
+        stroke={ink}
+        strokeWidth="1.2"
         strokeLinecap="round"
       />
-      <ellipse cx="113" cy="84" rx="4" ry="2.4" fill="#A8E6CF" />
-      <ellipse cx="128" cy="82" rx="4" ry="2.4" fill="#A8E6CF" />
+      <path d="M122 49l2.5 5-2.5 5-2.5-5z" fill={accent} fillOpacity="0.85" stroke={ink} strokeWidth="1" />
 
-      {/* 等待的小星星 */}
+      {/* 云纹 */}
       <path
-        d="M134 44l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"
-        fill="#FFB6C1"
-        stroke="#94304B"
-        strokeWidth="1"
+        d="M28 34c0-4 3-7 7-7 4 0 6 3 5 6 4 0 6 4 4 7"
+        stroke={ink}
+        strokeWidth="1.1"
+        strokeLinecap="round"
+        opacity="0.45"
       />
       <path
-        d="M34 54l1.4 3.4 3.4 1.4-3.4 1.4-1.4 3.4-1.4-3.4-3.4-1.4 3.4-1.4z"
-        fill="#FFD3B6"
-        stroke="#713C19"
-        strokeWidth="1"
+        d="M136 68c0-3 2-5 5-5 3 0 4 2 4 4 3 0 4 3 3 5"
+        stroke={ink}
+        strokeWidth="1.1"
+        strokeLinecap="round"
+        opacity="0.4"
       />
-      <circle cx="112" cy="52" r="2" fill="#A8E6CF" />
-      <circle cx="24" cy="80" r="1.6" fill="#FFB6C1" />
+      <circle cx="34" cy="72" r="1.6" fill={accent} opacity="0.45" />
+      <circle cx="110" cy="70" r="1.4" fill={wash} stroke={ink} strokeWidth="1" strokeOpacity="0.4" />
     </svg>
   );
 }

@@ -299,10 +299,10 @@ export default function LoginPage() {
             tabIndex={mode === tab ? 0 : -1}
             onClick={() => selectMode(tab)}
             onKeyDown={handleTabKeyDown}
-            className={`min-h-10 border-b border-transparent px-3 py-1.5 text-sm font-medium transition-colors ${
+            className={`min-h-10 rounded-pill border px-3 py-1.5 text-sm font-medium transition-colors ${
               mode === tab
-                ? 'border-daiqing-600 bg-surface text-daiqing-700'
-                : 'text-ink-soft hover:text-ink'
+                ? 'border-daiqing-600 bg-daiqing-100 text-daiqing-700'
+                : 'border-transparent text-ink-soft hover:bg-daiqing-50 hover:text-ink'
             }`}
           >
             {MODE_COPY[tab].title}

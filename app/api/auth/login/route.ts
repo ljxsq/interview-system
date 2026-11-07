@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        error: '缺少环境变量 AUTH_SECRET，无法签发登录凭证',
+        error: '服务器未配置 AUTH_SECRET，无法签发登录凭证',
       },
       { status: 500 },
     );
